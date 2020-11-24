@@ -28,6 +28,7 @@ class App(tk.Frame):
         self.stop_song_button.pack(side="top")
 
     def play_song(self):
+        sa.stop_all()
         wave_obj = sa.WaveObject.from_wave_file(self.choice.get())
         play_obj = wave_obj.play()
 
