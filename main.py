@@ -29,6 +29,11 @@ class App(tk.Frame):
         self.next_song_button["command"] = self.next_song
         self.next_song_button.pack(side="top")
 
+        self.random_song_button = tk.Button(self)
+        self.random_song_button["text"] = "Random Song"
+        self.random_song_button["command"] = self.random_song
+        self.random_song_button.pack(side="top")
+
         self.stop_song_button = tk.Button(self)
         self.stop_song_button["text"] = "Stop Song"
         self.stop_song_button["command"] = self.stop_song
@@ -53,12 +58,13 @@ class App(tk.Frame):
 
     def random_song(self):
         self.song_list.extend(glob.glob("audio/*.wav"))
-        self.song_list.remove(self.choice.get())
         random.shuffle(self.song_list)
         sa.stop_all()
-        wave_obj = sa.WaveObject.from_wave_file(self.song_list[0])
-        self.song_list.pop()
-        wave_obj.play()
+        for song in self.song_list:
+            wave_obj = sa.WaveObject.from_wave_file(song)
+            self.song_list.pop()
+            play_obj = wave_obj.play()
+            play_obj.wait_done()
 
     def stop_song(self):
         sa.stop_all()
